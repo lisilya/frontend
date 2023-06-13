@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Powered Flashcards</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <h1>AI Powered Flashcards</h1>
+    <div id="flashcard-container"></div>
+    <button id="new-flashcard-form">Create new flashcard</button>
+    <div id="new-flashcard-modal">
+        <div id="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create a new flashcard</h2>
+            <form id="new-flashcard-form">
+                <label for="question">Question:</label>
+                <input type="text" name="question" id="question" required>
+                <label for="answer">Answer:</label>
+                <input type="text" name="answer" id="answer">
+                <input type="submit" value="Create flashcard">
+            </form>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
