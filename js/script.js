@@ -32,6 +32,13 @@ newFlashcardForm.onsubmit = function(e) {
     e.preventDefault();
     const question = document.getElementById('question').value;
     const answer = document.getElementById('answer').value;
+    const url = document.getElementById('url').value;
+
+    if (url) {
+        createFlashcardsFromUrl(url);
+        newFlashcardModal.style.display = 'none';
+        return;
+    }
 
     fetch('http://localhost:8000/api/v1/flashcards/', {
         method: 'POST',
@@ -57,3 +64,27 @@ newFlashcardForm.onsubmit = function(e) {
 }
 
 getFlashcards();
+
+function createFlashcardsFromUrl(url) {
+    fetch('http://localhost:8000/api/v1/flashcards/from-url/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            url: url,
+        }),
+    })
+    .then(response => response.json())
+    .then(flashcards => {
+        for (let flashcard of flashcards) {
+            const flashcardDiv = document.createElement('div');
+            flashcardDiv.classList.add('flashcard');
+            flashcardDiv.innerHTML = `
+                <h2>${flashcard.question}</h2>
+                <p>${flashcard.answer}</p>
+            `;
+            flashcardContainer.appendChild(flashcardDiv);
+        }
+    });
+}
