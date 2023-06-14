@@ -60,3 +60,11 @@
 h1 {
     margin: 20px 20px;
 }
+
+.flashcard .answer {
+    display: none;
+}
+
+.flashcard.show .answer {
+    display: block;
+}
