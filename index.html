@@ -9,8 +9,8 @@
 <body>
     <h1>AI Powered Flashcards</h1>
     <div id="flashcard-container"></div>
-    <button id="new-flashcard-form">Create new flashcard</button>
-    <div id="new-flashcard-modal">
+    <button id="new-flashcard-btn">Create new flashcard</button>
+    <div id="new-flashcard-modal" class="modal">
         <div id="modal-content">
             <span class="close">&times;</span>
             <h2>Create a new flashcard</h2>
@@ -18,7 +18,7 @@
                 <label for="question">Question:</label>
                 <input type="text" name="question" id="question" required>
                 <label for="answer">Answer:</label>
-                <input type="text" name="answer" id="answer">
+                <input type="text" name="answer" id="answer" required>
                 <input type="submit" value="Create flashcard">
             </form>
         </div>
