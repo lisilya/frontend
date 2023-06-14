@@ -107,46 +107,13 @@ function createFlashcardsFromUrl(url) {
     });
 }
 
-function startLearning() {
-    fetch('http://localhost:8000/api/v1/flashcards/?ordering=knowledgeLevel')
-        .then(response => response.json())
-        .then(data => {
-            for (let i = 0; i < Math.min(data.length, 10); i++) {
-                let flashcard = data[i];
-                const flashcardDiv = document.createElement('div');
-                flashcardDiv.classList.add('flashcard');
-                flashcardDiv.innerHTML = `
-                    <h2>${flashcard.question}</h2>
-                    <p class="answer">${flashcard.answer}</p>
-                    <button class="known">I knew this</button>
-                    <button class="unknown">I didn't know this</button>
-                `;
-                flashcardDiv.onclick = function() {
-                    flashcardDiv.classList.toggle('show');
-                };
-                flashcardContainer.appendChild(flashcardDiv);
-                flashcardDiv.querySelector('.known').onclick = function() {
-                    fetch(`http://localhost:8000/api/v1/flashcards/${flashcard.id}/`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            correct_answers: flashcard.correct_answers + 1,
-                        }),
-                    });
-                };
-            }
-        });
-}
-
 // Start learning function
 
 let learningFlashcards = [];
 let currentFlashcardIndex = 0;
 
 function startLearning() {
-    fetch('http://localhost:8000/api/v1/flashcards/?ordering=correct_answers')
+    fetch('http://localhost:8000/api/v1/flashcards/?ordering=knowledgeLevel')
         .then(response => response.json())
         .then(data => {
             learningFlashcards = data.slice(0, 10);
