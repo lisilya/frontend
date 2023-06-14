@@ -16,6 +16,8 @@ function getFlashcards() {
                 flashcardDiv.innerHTML = `
                     <h2>${flashcard.question}</h2>
                     <p>${flashcard.answer}</p>
+                    <p>Correct: ${flashcard.correct_answers}</p>
+                    <p>Incorrect: ${flashcard.incorrect_answers}</p>
                 `;
                 flashcardContainer.appendChild(flashcardDiv);
                 deleteBtn.innerHTML = 'Delete';
@@ -192,13 +194,25 @@ function displayFlashcard(flashcard) {
 
     flashcardDiv.querySelector('.unknown').onclick = function(e) {
         e.stopPropagation();
-        currentFlashcardIndex++;
-        if (currentFlashcardIndex < learningFlashcards.length) {
-            displayFlashcard(learningFlashcards[currentFlashcardIndex]);
-        } else {
-            flashcardContainer.innerHTML = '<p>You have finished this learning session.</p>';
-        }
-    };
+        fetch(`http://localhost:8000/api/v1/flashcards/${flashcard.id}/`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                incorrect_answers: flashcard.incorrect_answers + 1,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            currentFlashcardIndex++;
+            if (currentFlashcardIndex < learningFlashcards.length) {
+                displayFlashcard(learningFlashcards[currentFlashcardIndex]);
+            } else {
+                flashcardContainer.innerHTML = '<p>You have finished this learning session.</p>';
+            }
+        });
+    };    
 }
 
 startLearningBtn.onclick = startLearning;
