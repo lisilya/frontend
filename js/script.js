@@ -10,12 +10,23 @@ function getFlashcards() {
         .then(data => {
             for (let flashcard of data) {
                 const flashcardDiv = document.createElement('div');
+                const deleteBtn = document.createElement('button');
                 flashcardDiv.classList.add('flashcard');
                 flashcardDiv.innerHTML = `
                     <h2>${flashcard.question}</h2>
                     <p>${flashcard.answer}</p>
                 `;
                 flashcardContainer.appendChild(flashcardDiv);
+                deleteBtn.innerHTML = 'Delete';
+                deleteBtn.onclick = function() {
+                    fetch(`http://localhost:8000/api/v1/flashcards/${flashcard.id}/delete_flashcard/`, {
+                        method: 'DELETE',
+                    })
+                    .then(() => {
+                        flashcardDiv.remove();
+                    });
+                };
+                flashcardDiv.appendChild(deleteBtn);
             }
         });
 }
@@ -63,7 +74,6 @@ newFlashcardForm.onsubmit = function(e) {
     });
 }
 
-getFlashcards();
 
 function createFlashcardsFromUrl(url) {
     fetch('http://localhost:8000/api/v1/flashcards/from-url/', {
@@ -88,3 +98,5 @@ function createFlashcardsFromUrl(url) {
         }
     });
 }
+
+getFlashcards();
